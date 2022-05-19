@@ -81,6 +81,10 @@ int main() {
     getline(inputString,date,',');
 
     getline(inputString,tempString,',');
+    temp = atof(tempString.c_str());
+    tempString = "";
+
+    getline(inputString,tempString,',');
     po4um = atof(tempString.c_str());   //get it as a line , then conversion
         tempString = "";                                //clean stream before using again
 
