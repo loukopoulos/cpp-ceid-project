@@ -15,7 +15,7 @@ int main()
 	int i = 0;
 
     ifstream file;
-    file.open("ocean_copy.csv");
+    file.open("ocean.csv");
     if(!file.is_open())
     {
         cout<<"Unable to open the file."<<endl;
