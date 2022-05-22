@@ -1,0 +1,3 @@
+C:/Users/nibbermaster/Desktop/main project/cmake-build-debug/CMakeFiles/main_project.dir
+C:/Users/nibbermaster/Desktop/main project/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/nibbermaster/Desktop/main project/cmake-build-debug/CMakeFiles/rebuild_cache.dir
