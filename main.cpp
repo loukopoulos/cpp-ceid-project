@@ -1,13 +1,14 @@
-#include <iostream>
-#include <fstream>
-#include <vector>
+#include <iostream> //input output functions
+#include <fstream> //file streams apo antikeimena
+#include <vector> 
 #include <string>
+#include <typeinfo> //pithanh xrhsh gia debugging - p.x. tsekaroume tupous metavlhtwn 
 
 using namespace std;
 
 int partition(vector <float> list, int low, int high)
 {
-	int pivot = list[low];
+	float pivot = list[low];
 	int i = low;
 	int j = high-1;
 	while (i<j)
