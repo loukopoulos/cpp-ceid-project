@@ -2,7 +2,6 @@
 #include <fstream>
 #include <vector>
 #include <string>
-#include <sstream>
 
 using namespace std;
 
@@ -11,7 +10,6 @@ int partition(vector <float> list, int low, int high)
 	int pivot = list[low];
 	int i = low;
 	int j = high-1;
-	int temp;
 	while (i<j)
 	{
 		while (list[i]<=pivot)
@@ -24,9 +22,7 @@ int partition(vector <float> list, int low, int high)
 		}
 		if (i<j)
 		{
-			temp = list.at(i);
-			list.at(i) = list.at(j);
-			list.at(j) = temp;
+			swap(list[i],list[j]);
 		}
 	}
 	return j;
@@ -133,10 +129,9 @@ int main()
     }
     //====================================================================
     file.close();
-	//quickSort(temps, 0, temps.size());
 	
-	
-	
+	//gia thn wra h quicksort epanalamvanetai apeira
+	quickSort(temps, 0, temps.size());
 	
 	
 	//an thelisw na emfanisw thn taksinomhmeno vector den tha mporw,
