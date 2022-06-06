@@ -2,37 +2,61 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <sstream>
 
 using namespace std;
 
-//bait taksinomhsh    
-void BubbleSort(vector <string> list)
+int partition(vector <float> list, int low, int high)
 {
-	int i,j;
-	string temp;
-    for(i=0; i<list.size()-1; i++){
-    	for (j=0; j<list.size()-i-1; j++){
-    		if (list[j] > list[j+1]){
-    			temp = list[j];
-    			list[j] = list [j+1];
-    			list[j+1] = temp;
-			}
+	int pivot = list[low];
+	int i = low;
+	int j = high-1;
+	int temp;
+	while (i<j)
+	{
+		while (list[i]<=pivot)
+		{
+			i++;
+		}
+		while (list[j]>pivot)
+		{
+			j--;
+		}
+		if (i<j)
+		{
+			temp = list.at(i);
+			list.at(i) = list.at(j);
+			list.at(j) = temp;
 		}
 	}
-	for (i=0; i<list.size()-1; i++){
-		cout << list[i] << endl;
-	}
-
+	return j;
 }
+
+void quickSort(vector <float> list, int low, int high)
+{
+	int i, j;
+	if (low<high)
+	{
+		j = partition(list, low, high);
+		quickSort(list, low, j);
+		quickSort(list, j+1, high);
+	}
+	for (i=0; i<list.size(); i++)
+	{
+		cout<<list[i]<<endl;
+	}
+}
+
 
 int main()
 {
     vector <string> dates;
-    vector <string> temps;
-    vector <string> phosphate;
+    vector <float> temps;
+    vector <float> phosphate;
 	vector <string> other;
     string line;
 	int i = 0;
+	float num; //xrhsh proswrinhs metavlitis gia metatroph stoixeiwn apo string se int
 
     ifstream file;
     file.open("ocean.csv");
@@ -67,10 +91,11 @@ int main()
         	//cout << "First occurence is " << found << endl;
 		}
 
-		//antigrafh ths thermokrasias kathe grammhs sto vector "temps"
+		//antigrafh ths THERMOKRASIAS kathe grammhs sto vector "temps"
 		length = line.copy(copiedString,found,0);
     	copiedString[length] = '\0';
-    	temps.push_back(copiedString);
+    	num = stof(copiedString);
+    	temps.push_back(num);
     	line.erase(0,found+1);
 
 		//idia kinhsh kai gia ksexwrismo ths phosphate
@@ -78,10 +103,11 @@ int main()
         if (found != string::npos){
         	//cout << "First occurence is " << found << endl;
 		}
-		//antigrafh ths phosphate kathe grammhs sto vector "phosphate"
+		//antigrafh ths PHOSPHATE kathe grammhs sto vector "phosphate"
 		length = line.copy(copiedString,found,0);
     	copiedString[length] = '\0';
-    	phosphate.push_back(copiedString);
+    	num = stof(copiedString);
+    	phosphate.push_back(num);
     	line.erase(0,found+1);
 
 		//antigrafh olhs ths allh upoloiphs plhroforias
@@ -107,8 +133,11 @@ int main()
     }
     //====================================================================
     file.close();
-        
-	BubbleSort(temps);
+	//quickSort(temps, 0, temps.size());
+	
+	
+	
+	
 	
 	//an thelisw na emfanisw thn taksinomhmeno vector den tha mporw,
 	//tha emfanisthei taksinomhmenh mono sth sunarthsh pou kaleite.
