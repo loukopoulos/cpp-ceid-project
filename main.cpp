@@ -8,42 +8,32 @@ using namespace std;
 
 int partition(vector <float> list, int low, int high)
 {
-	float pivot = list[low];
-	int i = low;
-	int j = high-1;
-	while (i<j)
-	{
-		while (list[i]<=pivot)
-		{
-			i++;
-		}
-		while (list[j]>pivot)
-		{
-			j--;
-		}
-		if (i<j)
-		{
+	int i;
+	int pivot = high;
+	int j = low;
+	for(int i=high; i<low; ++i){
+		if(list[i]<list[pivot]){
 			swap(list[i],list[j]);
+			++j;
 		}
 	}
+	swap(list[j],list[pivot]);
+
+	cout<<list.size()<<endl;
 	return j;
 }
 
 void quickSort(vector <float> list, int low, int high)
 {
 	int i, j;
-	if (low<high)
-	{
-		j = partition(list, low, high);
-		quickSort(list, low, j);
-		quickSort(list, j+1, high);
-	}
-	for (i=0; i<list.size(); i++)
+	j = partition(list, low, high);
+	quickSort(list, low, j);
+	quickSort(list, j+1, high);
+	/*for (i=0; i<list.size(); i++)
 	{
 		cout<<list[i]<<endl;
-	}
+	}*/
 }
-
 
 int main()
 {
@@ -74,26 +64,28 @@ int main()
     while(getline(file, line))
     {
     	char copiedString[30];
-    	//antigrafh ths hmeromhnia kathe grammhs sto vector "dates"
+    	//antigrafh ths HMEROMHNIAS kathe grammhs sto vector "dates"
     	size_t length = line.copy(copiedString,10,0);
     	copiedString[length] = '\0';
 		dates.push_back(copiedString); //eisagwgh sto vector
 		line.erase(0,11); //diagrafh hmeromhnias apo th grammh excel
 
+
 		//euresh theshs tou prwtou kommatos
 		//gia ksexwrismo twn plhroforiwn pou psaxnoume
         char comma = ',';
+        
         size_t found = line.find(comma);
         if (found != string::npos){
         	//cout << "First occurence is " << found << endl;
 		}
-
 		//antigrafh ths THERMOKRASIAS kathe grammhs sto vector "temps"
 		length = line.copy(copiedString,found,0);
     	copiedString[length] = '\0';
     	num = stof(copiedString);
     	temps.push_back(num);
     	line.erase(0,found+1);
+
 
 		//idia kinhsh kai gia ksexwrismo ths phosphate
         found = line.find(comma);
@@ -107,13 +99,13 @@ int main()
     	phosphate.push_back(num);
     	line.erase(0,found+1);
 
+
 		//antigrafh olhs ths allh upoloiphs plhroforias
 		length = line.copy(copiedString,line.length(),0);
     	copiedString[length] = '\0';
     	other.push_back(copiedString);
     	line.erase(0,line.length());
 
-		//!!!emfanish olwn twn stoixeiwn
 		
 		//cout<<"Date: "<<dates[i]<<endl;
         //cout<<"Temperature: "<<temps[i]<<endl;
@@ -121,17 +113,14 @@ int main()
         //cout<<"Other info: "<<other[i]<<endl;
         //cout<<endl;
 		
-        //**Shmeiwsh: gia thn euresh twn kommatwn
-		//mporoun na afairethoun oi sunthikes if
-		//pou tupwnoun gia tuxwn provlimata,
-		//afou den mas vgazei error 
-		
         i++;
-    }
+	}
     //====================================================================
     file.close();
 	
+	
 	//gia thn wra h quicksort epanalamvanetai apeira
+	//pithano provlima pou exei na kanei me thn emveleia tou vector mas
 	quickSort(temps, 0, temps.size());
 	
 	
