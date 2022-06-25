@@ -6,33 +6,35 @@
 
 using namespace std;
 
-int partition(vector <float> list, int low, int high)
-{
-	int i;
-	int pivot = high;
-	int j = low;
-	for(int i=high; i<low; ++i){
-		if(list[i]<list[pivot]){
-			swap(list[i],list[j]);
+int Partition(vector<float> &v, int start, int end){
+	
+	int pivot = end;
+	int j = start;
+	for(int i=start;i<end;++i){
+		if(v[i]<v[pivot]){
+			swap(v[i],v[j]);
 			++j;
 		}
 	}
-	swap(list[j],list[pivot]);
-
-	cout<<list.size()<<endl;
+	swap(v[j],v[pivot]);
 	return j;
+	
 }
 
-void quickSort(vector <float> list, int low, int high)
-{
-	int i, j;
-	j = partition(list, low, high);
-	quickSort(list, low, j);
-	quickSort(list, j+1, high);
-	/*for (i=0; i<list.size(); i++)
-	{
-		cout<<list[i]<<endl;
-	}*/
+void Quicksort(vector<float> &v, int start, int end ){
+
+	if(start<end){
+		int p = Partition(v,start,end);
+		Quicksort(v,start,p-1);
+		Quicksort(v,p+1,end);
+	}
+	
+}
+
+void PrintVector(vector<int> v){
+	for(int i=0;i<v.size();++i)
+		cout<<v[i]<<" ";
+	cout<<"\n\n";
 }
 
 int main()
@@ -121,9 +123,12 @@ int main()
 	
 	//gia thn wra h quicksort epanalamvanetai apeira
 	//pithano provlima pou exei na kanei me thn emveleia tou vector mas
-	quickSort(temps, 0, temps.size());
-	
-	
+	Quicksort(temps, 0, temps.size());
+	cout<<temps.size()<<endl;
+	for (i = 0; i<=temps.size(); i++)
+	{
+		cout<<i+1<<":"<< temps[i]<<endl;
+	}
 	//an thelisw na emfanisw thn taksinomhmeno vector den tha mporw,
 	//tha emfanisthei taksinomhmenh mono sth sunarthsh pou kaleite.
 	//sthn main tha emfanisthei me th seira opws htan ola ta stoixeia tou excel
