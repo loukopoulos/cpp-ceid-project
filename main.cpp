@@ -6,42 +6,41 @@
 
 using namespace std;
 
-int Partition(vector<float> &v, int start, int end){
-	
+//orisma ola ta vectors
+int Partition(vector<float> &temps, int start, int end, vector<string> &dates, vector<float> &phosp, vector<string> &other)
+{	
 	int pivot = end;
 	int j = start;
 	for(int i=start;i<end;++i){
-		if(v[i]<v[pivot]){
-			swap(v[i],v[j]);
+		if(temps[i]<temps[pivot]){
+			swap(temps[i],temps[j]);
+			swap(dates[i],dates[j]);
+			swap(phosp[i],phosp[j]);
+			swap(other[i],other[j]);
+			//swap ta stoixeia, dunamika
 			++j;
 		}
 	}
-	swap(v[j],v[pivot]);
+	swap(temps[j],temps[pivot]);
 	return j;
 	
 }
 
-void Quicksort(vector<float> &v, int start, int end ){
-
-	if(start<end){
-		int p = Partition(v,start,end);
-		Quicksort(v,start,p-1);
-		Quicksort(v,p+1,end);
+void Quicksort(vector<float> &temps, int start, int end, vector<string> &dates, vector<float> &phosp, vector<string> &other)
+{
+	if(start<end)
+	{
+		int p = Partition(temps, start, end, dates, phosp, other);
+		Quicksort(temps,start,p-1, dates, phosp, other);
+		Quicksort(temps,p+1,end, dates, phosp, other);
 	}
-	
-}
-
-void PrintVector(vector<int> v){
-	for(int i=0;i<v.size();++i)
-		cout<<v[i]<<" ";
-	cout<<"\n\n";
 }
 
 int main()
 {
     vector <string> dates;
     vector <float> temps;
-    vector <float> phosphate;
+    vector <float> phosp;
 	vector <string> other;
     string line;
 	int i = 0;
@@ -89,16 +88,16 @@ int main()
     	line.erase(0,found+1);
 
 
-		//idia kinhsh kai gia ksexwrismo ths phosphate
+		//idia kinhsh kai gia ksexwrismo ths phosp
         found = line.find(comma);
         if (found != string::npos){
         	//cout << "First occurence is " << found << endl;
 		}
-		//antigrafh ths PHOSPHATE kathe grammhs sto vector "phosphate"
+		//antigrafh ths PHOSPHATE kathe grammhs sto vector "phosp"
 		length = line.copy(copiedString,found,0);
     	copiedString[length] = '\0';
     	num = stof(copiedString);
-    	phosphate.push_back(num);
+    	phosp.push_back(num);
     	line.erase(0,found+1);
 
 
@@ -111,7 +110,7 @@ int main()
 		
 		//cout<<"Date: "<<dates[i]<<endl;
         //cout<<"Temperature: "<<temps[i]<<endl;
-        //cout<<"Phosphate: "<<phosphate[i]<<endl;
+        //cout<<"Phosphate: "<<phosp[i]<<endl;
         //cout<<"Other info: "<<other[i]<<endl;
         //cout<<endl;
 		
@@ -119,20 +118,19 @@ int main()
 	}
     //====================================================================
     file.close();
+    
+	Quicksort(temps, 0, temps.size(), dates, phosp, other);
 	
-	
-	//gia thn wra h quicksort epanalamvanetai apeira
-	//pithano provlima pou exei na kanei me thn emveleia tou vector mas
-	Quicksort(temps, 0, temps.size());
-	cout<<temps.size()<<endl;
 	for (i = 0; i<=temps.size(); i++)
 	{
-		cout<<i+1<<":"<< temps[i]<<endl;
+		cout<<i+1<<")"<<endl;
+		cout<<"Date: "<<dates[i]<<endl;
+        cout<<"Temperature: "<<temps[i]<<endl;
+        cout<<"Phosphate: "<<phosp[i]<<endl;
+        cout<<"Other info: "<<other[i]<<endl;
+        cout<<endl;
+        cout<<endl;
 	}
-	//an thelisw na emfanisw thn taksinomhmeno vector den tha mporw,
-	//tha emfanisthei taksinomhmenh mono sth sunarthsh pou kaleite.
-	//sthn main tha emfanisthei me th seira opws htan ola ta stoixeia tou excel
-
 
     return 0;
 }
