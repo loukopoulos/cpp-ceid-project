@@ -6,7 +6,7 @@
 
 using namespace std;
 
-//orisma ola ta vectors
+//orismata ola ta vectors
 int Partition(vector<float> &temps, int start, int end, vector<string> &dates, vector<float> &phosp, vector<string> &other)
 {	
 	int pivot = end;
@@ -22,18 +22,38 @@ int Partition(vector<float> &temps, int start, int end, vector<string> &dates, v
 		}
 	}
 	swap(temps[j],temps[pivot]);
-	return j;
-	
+	swap(dates[j],dates[pivot]);
+	swap(phosp[j],phosp[pivot]);
+	swap(other[j],other[pivot]);
+	return j;	
 }
 
 void Quicksort(vector<float> &temps, int start, int end, vector<string> &dates, vector<float> &phosp, vector<string> &other)
 {
-	if(start<end)
-	{
+	if(start<end){
 		int p = Partition(temps, start, end, dates, phosp, other);
 		Quicksort(temps,start,p-1, dates, phosp, other);
 		Quicksort(temps,p+1,end, dates, phosp, other);
 	}
+}
+
+void Insertion_sort(vector<float> &temps, vector<string> &dates, vector<float> &phosp, vector<string> &other)
+{
+    for(size_t j = 1; j < temps.size(); j++)
+    {
+      float key = temps[j];
+      int i = j-1;
+
+      while(i >= 0 && temps[i] > key)
+      {
+         swap(temps[i+1], temps[i]);
+         swap(dates[i+1], dates[i]);
+         swap(phosp[i+1], phosp[i]);
+         swap(other[i+1], other[i]);
+         i--;
+      }
+      temps[i+1] = key;
+    }
 }
 
 int main()
@@ -119,9 +139,22 @@ int main()
     //====================================================================
     file.close();
     
-	Quicksort(temps, 0, temps.size(), dates, phosp, other);
+    
+	//Quicksort(temps, 0, temps.size()-1, dates, phosp, other);
+	Insertion_sort(temps, dates, phosp, other);
 	
-	for (i = 0; i<=temps.size(); i++)
+	/*
+	for (i = 0; i<temps.size(); ++i)
+	{
+		cout<<i+1<<")"<<endl;
+		cout<<temps[i]<<endl;
+		cout<<endl;
+		cout<<endl;
+	}
+	*/
+	
+	/*
+	for (i = 0; i<temps.size(); ++i)
 	{
 		cout<<i+1<<")"<<endl;
 		cout<<"Date: "<<dates[i]<<endl;
@@ -131,6 +164,6 @@ int main()
         cout<<endl;
         cout<<endl;
 	}
-
+	*/
     return 0;
 }
