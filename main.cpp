@@ -37,7 +37,7 @@ void Quicksort(vector<float> &temps, int start, int end, vector<string> &dates, 
 	}
 }
 
-void Insertion_sort(vector<float> &temps, vector<string> &dates, vector<float> &phosp, vector<string> &other)
+void Insertionsort(vector<float> &temps, vector<string> &dates, vector<float> &phosp, vector<string> &other)
 {
     for(size_t j = 1; j < temps.size(); j++)
     {
@@ -55,6 +55,57 @@ void Insertion_sort(vector<float> &temps, vector<string> &dates, vector<float> &
       temps[i+1] = key;
     }
 }
+
+  
+void heapify(vector<float> &phosp, int n, int i, vector<string> &dates, vector<float> &temps, vector<string> &other) {
+    // Find largest among root, left child and right child
+    int largest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+  
+    if (left < n && phosp[left] > phosp[largest])
+      largest = left;
+  
+    if (right < n && phosp[right] > phosp[largest])
+      largest = right;
+  
+    // Swap and continue heapifying if root is not largest
+    if (largest != i) {
+      swap(phosp[i], phosp[largest]);
+      swap(dates[i], dates[largest]);
+      swap(temps[i], temps[largest]);
+      swap(other[i], other[largest]);
+      heapify(phosp, n, largest, dates, temps, other);
+    }
+  }
+  
+  // main function to do heap sort
+void Heapsort(vector<float> &phosp, int n, vector<string> &dates, vector<float> &temps, vector<string> &other) {
+    // Build max heap
+    for (int i = n / 2 - 1; i >= 0; i--)
+      heapify(phosp, n, i, dates, temps, other);
+  
+    // Heap sort
+    for (int i = n - 1; i >= 0; i--) {
+      swap(phosp[0], phosp[i]);
+      swap(dates[0], dates[i]);
+      swap(temps[0], temps[i]);
+      swap(other[0], other[i]);
+  
+      // Heapify root element to get highest element at root again
+      heapify(phosp, i, 0, dates, temps, other);
+    }
+  }
+
+
+
+
+
+
+
+
+
+
 
 int main()
 {
@@ -141,19 +192,12 @@ int main()
     
     
 	//Quicksort(temps, 0, temps.size()-1, dates, phosp, other);
-	Insertion_sort(temps, dates, phosp, other);
+	//Insertionsort(temps, dates, phosp, other);
+	int n = phosp.size();
+	Heapsort(phosp, n, dates, temps, other);
+
 	
-	/*
-	for (i = 0; i<temps.size(); ++i)
-	{
-		cout<<i+1<<")"<<endl;
-		cout<<temps[i]<<endl;
-		cout<<endl;
-		cout<<endl;
-	}
-	*/
 	
-	/*
 	for (i = 0; i<temps.size(); ++i)
 	{
 		cout<<i+1<<")"<<endl;
@@ -164,6 +208,6 @@ int main()
         cout<<endl;
         cout<<endl;
 	}
-	*/
+	
     return 0;
 }
