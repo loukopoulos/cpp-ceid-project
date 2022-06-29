@@ -4,11 +4,67 @@
 #include <string>
 #include <typeinfo> //pithanh xrhsh gia debugging - p.x. tsekaroume tupous metavlhtwn 
 #include <algorithm>
-
+#include <cmath>
 
 using namespace std;
 
 //FUNCTIONS-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+//Sort gia Binary Anazhthsh kai alla......
+void Insertionsort_for_dates(vector<string> &formatted_dates, vector<string> &dates, vector<float> &temps, vector<float> &phosp, vector<string> &other)
+{
+	int i;
+
+	for (i=0; i<dates.size(); i++)
+	{
+		string hmero = dates[i];
+		hmero.erase(2,1);
+		hmero.erase(4,1);
+		formatted_dates.push_back(hmero);
+	}
+	
+	
+    for(size_t j = 1; j < formatted_dates.size(); j++)
+    {
+      string key = formatted_dates[j];
+      int i = j-1;
+
+      while(i >= 0 && formatted_dates[i] > key)
+      {
+         swap(formatted_dates[i+1], formatted_dates[i]);
+         swap(temps[i+1], temps[i]);
+         swap(dates[i+1], dates[i]);
+         swap(phosp[i+1], phosp[i]);
+         swap(other[i+1], other[i]);
+         i--;
+      }
+      formatted_dates[i+1] = key;
+    }
+}
+
+
+int BinarySearch(string input, vector<string> &dates, vector<string> &formatted_dates, vector <float> &temps, vector<float> &phosp, vector<string> &other )
+{
+	int i =0;
+	Insertionsort_for_dates(formatted_dates, dates, temps, phosp, other);
+	
+	int left = 0;
+	int right = dates.size()-1;
+	while (left <= right)
+	{	
+		int next = left + (right-left)/2;
+		if (formatted_dates[next]==input)
+			return next;
+			
+		if (formatted_dates[next] < input)
+			left = next + 1;
+			
+		else
+			right = next - 1;
+	}
+	return -1;
+}
+
+
 
 //orismata ola ta vectors
 int Partition(vector<float> &temps, int start, int end, vector<string> &dates, vector<float> &phosp, vector<string> &other)
@@ -59,6 +115,7 @@ void Insertionsort(vector<float> &temps, vector<string> &dates, vector<float> &p
       temps[i+1] = key;
     }
 }
+
  
 void heapify(vector<float> &phosp, int n, int i, vector<string> &dates, vector<float> &temps, vector<string> &other) {
     // Find largest among root, left child and right child
@@ -160,6 +217,8 @@ int main()
     vector <float> temps;
     vector <float> phosp;
 	vector <string> other;
+	vector <string> formatted_dates;
+	
     string line;
 	int i = 0;
 	float num; //xrhsh proswrinhs metavlitis gia metatroph stoixeiwn apo string se int
@@ -243,23 +302,37 @@ int main()
 	//int n = phosp.size();
 	//Heapsort(phosp, n, dates, temps, other);
 	
-	int arr[phosp.size()];
-	int arr2[temps.size()];
-	for (i = 0; i<phosp.size(); i++)
-	{
-		arr[i] = (int) (phosp[i]*100);
-		arr2[i] = (int) (temps[i]*100);
-	}
-	Countingsort(arr, arr2, dates, phosp.size());
 	
+	//int arr[phosp.size()];
+	//int arr2[temps.size()];
+	//for (i = 0; i<phosp.size(); i++)
+	//{
+	//	arr[i] = (int) (phosp[i]*100);
+	//	arr2[i] = (int) (temps[i]*100);
+    //}
+	//Countingsort(arr, arr2, dates, phosp.size());
+	//for (i = 0; i<phosp.size(); i++)
+	//{
+	//	phosp[i] = (float) (arr[i])/100;
+	//	temps[i] = (float) (arr2[i])/100;
+	//}
+	string x;
+	cout<<"Enter date for Binary Search: "<<endl;
+	cin >> x;
 	
-	for (i = 0; i<phosp.size(); i++)
+	int pos;
+	pos = BinarySearch(x, dates, formatted_dates, temps, phosp, other);
+	
+	if (pos == -1)
+		cout<<"Exases"<<endl;
+	else
 	{
-		phosp[i] = (float) (arr[i])/100;
-		temps[i] = (float) (arr2[i])/100;
+		cout<<"Date: "<<dates[pos]<<endl;
+		cout<<"Temperature: "<<temps[pos]<<endl;
+		cout<<"Phosphate: "<<phosp[pos]<<endl;
+		cout<<"Other info: "<<other[pos]<<endl;
 	}
-
-
+	
 
 
     return 0;
