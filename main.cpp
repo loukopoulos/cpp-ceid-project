@@ -3,8 +3,12 @@
 #include <vector> 
 #include <string>
 #include <typeinfo> //pithanh xrhsh gia debugging - p.x. tsekaroume tupous metavlhtwn 
+#include <algorithm>
+
 
 using namespace std;
+
+//FUNCTIONS-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 //orismata ola ta vectors
 int Partition(vector<float> &temps, int start, int end, vector<string> &dates, vector<float> &phosp, vector<string> &other)
@@ -55,8 +59,7 @@ void Insertionsort(vector<float> &temps, vector<string> &dates, vector<float> &p
       temps[i+1] = key;
     }
 }
-
-  
+ 
 void heapify(vector<float> &phosp, int n, int i, vector<string> &dates, vector<float> &temps, vector<string> &other) {
     // Find largest among root, left child and right child
     int largest = i;
@@ -97,15 +100,59 @@ void Heapsort(vector<float> &phosp, int n, vector<string> &dates, vector<float> 
     }
   }
 
+void Countingsort(int arr[], int arr2[], vector<string> &dates, int size)
+{
+  int phospout[size];
+  string datesout[size];
+  int tempsout[size];
+  
+  int count[size];
+  int max = arr[0];
+  string datesmax = dates[0];
+  int max2 = arr2[0];
+      for (int i = 1; i < size; i++)
+	  {
+        if (arr[i] > max)
+          max = arr[i];
+          datesmax = dates[i];
+          max2 = arr2[i];
+      }
+
+      for (int i = 0; i <= max; ++i)
+	  {
+        count[i] = 0;
+      }
+
+      for (int i = 0; i < size; i++)
+	  {
+        count[arr[i]]++;
+      }
+
+      for (int i = 1; i <= max; i++)
+	  {
+        count[i] += count[i - 1];
+      }
+
+      for (int i = size - 1; i >= 0; i--) {
+        phospout[count[arr[i]] - 1] = arr[i];
+        datesout[count[arr[i]] - 1] = dates[i];
+        tempsout[count[arr[i]] - 1] = arr2[i];
+		count[arr[i]]--;
+      }
+
+      for (int i = 0; i < size; i++) {
+        arr[i] = phospout[i];
+		dates[i] = datesout[i];
+		arr2[i] = tempsout[i];
+      }
+} 
 
 
 
 
 
 
-
-
-
+//MAIN-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 int main()
 {
@@ -193,21 +240,27 @@ int main()
     
 	//Quicksort(temps, 0, temps.size()-1, dates, phosp, other);
 	//Insertionsort(temps, dates, phosp, other);
-	int n = phosp.size();
-	Heapsort(phosp, n, dates, temps, other);
-
+	//int n = phosp.size();
+	//Heapsort(phosp, n, dates, temps, other);
 	
-	
-	for (i = 0; i<temps.size(); ++i)
+	int arr[phosp.size()];
+	int arr2[temps.size()];
+	for (i = 0; i<phosp.size(); i++)
 	{
-		cout<<i+1<<")"<<endl;
-		cout<<"Date: "<<dates[i]<<endl;
-        cout<<"Temperature: "<<temps[i]<<endl;
-        cout<<"Phosphate: "<<phosp[i]<<endl;
-        cout<<"Other info: "<<other[i]<<endl;
-        cout<<endl;
-        cout<<endl;
+		arr[i] = (int) (phosp[i]*100);
+		arr2[i] = (int) (temps[i]*100);
 	}
+	Countingsort(arr, arr2, dates, phosp.size());
 	
+	
+	for (i = 0; i<phosp.size(); i++)
+	{
+		phosp[i] = (float) (arr[i])/100;
+		temps[i] = (float) (arr2[i])/100;
+	}
+
+
+
+
     return 0;
 }
