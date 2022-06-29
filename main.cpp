@@ -9,7 +9,7 @@
 using namespace std;
 
 //FUNCTIONS-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-//Sort gia Binary Anazhthsh kai alla......
+//Sort gia Binary Anazhthsh kai alla...... :)
 void Insertionsort_for_dates(vector<string> &formatted_dates, vector<string> &dates, vector<float> &temps, vector<float> &phosp, vector<string> &other)
 {
 	int i;
@@ -41,7 +41,6 @@ void Insertionsort_for_dates(vector<string> &formatted_dates, vector<string> &da
     }
 }
 
-
 int BinarySearch(string input, vector<string> &dates, vector<string> &formatted_dates, vector <float> &temps, vector<float> &phosp, vector<string> &other )
 {
 	int i =0;
@@ -63,8 +62,6 @@ int BinarySearch(string input, vector<string> &dates, vector<string> &formatted_
 	}
 	return -1;
 }
-
-
 
 //orismata ola ta vectors
 int Partition(vector<float> &temps, int start, int end, vector<string> &dates, vector<float> &phosp, vector<string> &other)
@@ -205,10 +202,6 @@ void Countingsort(int arr[], int arr2[], vector<string> &dates, int size)
 } 
 
 
-
-
-
-
 //MAIN-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 int main()
@@ -247,8 +240,7 @@ int main()
     	copiedString[length] = '\0';
 		dates.push_back(copiedString); //eisagwgh sto vector
 		line.erase(0,11); //diagrafh hmeromhnias apo th grammh excel
-
-
+		
 		//euresh theshs tou prwtou kommatos
 		//gia ksexwrismo twn plhroforiwn pou psaxnoume
         char comma = ',';
@@ -264,7 +256,6 @@ int main()
     	temps.push_back(num);
     	line.erase(0,found+1);
 
-
 		//idia kinhsh kai gia ksexwrismo ths phosp
         found = line.find(comma);
         if (found != string::npos){
@@ -277,14 +268,12 @@ int main()
     	phosp.push_back(num);
     	line.erase(0,found+1);
 
-
 		//antigrafh olhs ths allh upoloiphs plhroforias
 		length = line.copy(copiedString,line.length(),0);
     	copiedString[length] = '\0';
     	other.push_back(copiedString);
     	line.erase(0,line.length());
 
-		
 		//cout<<"Date: "<<dates[i]<<endl;
         //cout<<"Temperature: "<<temps[i]<<endl;
         //cout<<"Phosphate: "<<phosp[i]<<endl;
@@ -295,45 +284,80 @@ int main()
 	}
     //====================================================================
     file.close();
+    i = 0;
+    int n = phosp.size(); //1405
     
-    
-	//Quicksort(temps, 0, temps.size()-1, dates, phosp, other);
-	//Insertionsort(temps, dates, phosp, other);
-	//int n = phosp.size();
-	//Heapsort(phosp, n, dates, temps, other);
-	
-	
-	//int arr[phosp.size()];
-	//int arr2[temps.size()];
-	//for (i = 0; i<phosp.size(); i++)
-	//{
-	//	arr[i] = (int) (phosp[i]*100);
-	//	arr2[i] = (int) (temps[i]*100);
-    //}
-	//Countingsort(arr, arr2, dates, phosp.size());
-	//for (i = 0; i<phosp.size(); i++)
-	//{
-	//	phosp[i] = (float) (arr[i])/100;
-	//	temps[i] = (float) (arr2[i])/100;
-	//}
-	string x;
-	cout<<"Enter date for Binary Search: "<<endl;
-	cin >> x;
-	
-	int pos;
-	pos = BinarySearch(x, dates, formatted_dates, temps, phosp, other);
-	
-	if (pos == -1)
-		cout<<"Exases"<<endl;
-	else
+    int expression;
+	while (expression!=0)
 	{
-		cout<<"Date: "<<dates[pos]<<endl;
-		cout<<"Temperature: "<<temps[pos]<<endl;
-		cout<<"Phosphate: "<<phosp[pos]<<endl;
-		cout<<"Other info: "<<other[pos]<<endl;
+	    cout<<"いいい MENU いいい"<<endl;
+	    cout<<"1. Insertion Sort"<<endl;
+	    cout<<"2. Quick Sort"<<endl;
+	    cout<<"3. Heap Sort"<<endl;
+	    cout<<"4. Counting Sort"<<endl;
+	    cout<<"5. Binary Search"<<endl;
+	    cout<<"0. EXIT"<<endl; 
+	    cout<<"Please Enter your choice: ";
+	    cin >> expression;
+	    cout<<endl<<endl;
+	    
+	    switch (expression)
+	    {
+	    	case 1:
+	    		Insertionsort(temps, dates, phosp, other);
+	    		break;
+	    		
+	    	case 2:
+	    		Quicksort(temps, 0, temps.size()-1, dates, phosp, other);
+	    		break;
+	    		
+	    	case 3:
+	    		Heapsort(phosp, n, dates, temps, other);
+	    		break;
+	    		
+	    	case 4:
+	    		{
+			    	int arr[phosp.size()];
+					int arr2[temps.size()];
+					for (i = 0; i<phosp.size(); i++)
+					{
+						arr[i] = (int) (phosp[i]*100);
+						arr2[i] = (int) (temps[i]*100);
+			    	}
+					Countingsort(arr, arr2, dates, phosp.size());
+					for (i = 0; i<phosp.size(); i++)
+					{
+						phosp[i] = (float) (arr[i])/100;
+						temps[i] = (float) (arr2[i])/100;
+					}
+					break;
+				}
+			case 5:
+				{
+					string x;
+					cout<<"Enter date for Binary Search(In MMDDYYYY format): "<<endl; //tha mporousa na to tropopoihsw me string functions na pairnei kathe mera/mhna/xrono ksexwrista, alla den eixa allo xrono.
+					cin >> x;
+					int pos;
+					pos = BinarySearch(x, dates, formatted_dates, temps, phosp, other);
+					if (pos == -1)
+						cout<<"Exases"<<endl;
+					else
+					{
+						cout<<"Date: "<<dates[pos]<<endl;
+						cout<<"Temperature: "<<temps[pos]<<endl;
+						cout<<"Phosphate: "<<phosp[pos]<<endl;
+						cout<<endl<<endl;
+					}
+					break;
+				}
+			case 0:
+				{
+					break;
+				}
+		}
 	}
 	
-
+	
 
     return 0;
 }
